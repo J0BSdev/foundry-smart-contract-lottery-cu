@@ -24,8 +24,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/dev/vrf/libraries/VRFV2PlusClient.sol";
-import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/dev/vrf/VRFConsumerBaseV2Plus.sol";
+import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
+import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 
 /// @title A sample Raffle contract
 /// @author Lovro Posel
@@ -148,7 +148,7 @@ VRFV2PlusClient.RandomWordsRequest memory request = VRFV2PlusClient.RandomWordsR
 
 }  
    //CEI: Checks, Effects, Interactions     
-  function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override{
+  function fulfillRandomWords(uint256 /* requestId */, uint256[] calldata randomWords) internal override{
     //checks
     //conditionals
 
