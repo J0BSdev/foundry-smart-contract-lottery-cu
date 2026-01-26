@@ -43,21 +43,22 @@ networkConfig[SEPOLIA_CHAIN_ID] = getSepoliaEthConfig();
 }
 
 function getConfigByChainId(uint256 chainId) public returns (NetworkConfig memory) {
-    if (networkConfig[chainId].vrfCoordinator !=address(0)) {
+    if (networkConfig[chainId].vrfCoordinator != address(0)) {
         return networkConfig[chainId];
-    }   else if (chainId = LOCAL_CHAIN_ID) {
-        return getOrCreateAnvilConfig();
-        //getOrCreateLocalConfig();
-       } else {
-            revert HelperConfig__InvalidChainId();
-        }
+    } else if (block.chainid == LOCAL_CHAIN_ID) {
+           return getOrCreateAnvilConfig();
+    //getOrCreateLocalConfig();
+    } else {
+        revert HelperConfig__InvalidChainId();
     }
+}
 
 function getConfig() public returns (NetworkConfig memory) {
     return getConfigByChainId(block.chainid);
 }
-    function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
-        return NetworkConfig({
+
+function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
+    return NetworkConfig({
             entranceFee: 0.01 ether, //1e16
             interval: 30, //30 seconds
             vrfCoordinator: 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625,
@@ -65,10 +66,9 @@ function getConfig() public returns (NetworkConfig memory) {
             callbackGasLimit: 500000, //500000 gas
             subscriptionId: 0,
 
-            link: 0x79d3D58aCE80aF49453e7c32e1b2018ACAe13E3e
+            link: 0x79D3D58aCE80aF49453e7c32E1B2018AcaE13E3E
         });
-
-    NetworkConfig memory localNetworkConfig;
+    }
 
     function getOrCreateAnvilConfig() public returns (NetworkConfig memory localNetworkConfig) {
         // Check to see if we set a config for this chain
@@ -80,8 +80,7 @@ function getConfig() public returns (NetworkConfig memory) {
   // Deploy mocks and such      
 vm.startBroadcast();
 VRFCoordinatorV2_5Mock vrfCoordinatorMock = 
-new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UINT_LINK);
-MOCK_WEI_PER_UINT_LINK);
+    new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UINT_LINK);  
 vm.stopBroadcast();
 
 localNetworkConfig = NetworkConfig({
@@ -92,7 +91,7 @@ localNetworkConfig = NetworkConfig({
     gasLane: 0x474eae0326401e7ec14af5ebd6d6fee8f89f9bed30ad9e36d9be6093d974f4a8,
     callbackGasLimit: 500000, //500000 gas
     subscriptionId: 0,
-    link: 0x79d3D58aCE80aF49453e7c32e1b2018ACAe13E3e,
+    link: 0x79D3D58aCE80aF49453e7c32E1B2018AcaE13E3E
 }); 
 
 return localNetworkConfig;

@@ -27,21 +27,20 @@ uint256 public constant STARTING_USER_BALANCE = 10 ether;
         DeployRaffle deployRaffle = new DeployRaffle();
         (raffle, helperConfig) = deployRaffle.deployContract();
         HelperConfig.NetworkConfig memory networkConfig = helperConfig.getConfig();
-        entranceFee = config.entranceFee;
-        interval = config.interval;
-        vrfCoordinator = config.vrfCoordinator;
-        gasLane = config.gasLane;
-        subscriptionId = config.subscriptionId;
-        callbackGasLimit = config.callbackGasLimit;
-        link = config.link;
+        entranceFee = networkConfig.entranceFee;
+        interval = networkConfig.interval;
+        vrfCoordinator = networkConfig.vrfCoordinator;
+        gasLane = networkConfig.gasLane;
+        subscriptionId = networkConfig.subscriptionId;
+        callbackGasLimit = networkConfig.callbackGasLimit;
+        link = networkConfig.link;
 
 
     
     }
 
 
-function testRaffleInitializesInOpenState() public view{
-    assert(raffle,getRaffleState() == Raffle.RaffleState.OPEN);
+function testRaffleInitializesInOpenState() public view {
+    assert(raffle.getRaffleState() == Raffle.RaffleState.OPEN);
 }
-
 }

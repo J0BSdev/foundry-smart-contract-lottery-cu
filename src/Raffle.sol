@@ -169,7 +169,7 @@ VRFV2PlusClient.RandomWordsRequest memory request = VRFV2PlusClient.RandomWordsR
   
 } 
 
-function getRaffleState() internal view returns (RaffleState){
+function getRaffleState() public view returns (RaffleState){
   return s_raffleState;
 
 }
