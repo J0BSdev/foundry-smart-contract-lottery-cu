@@ -10,6 +10,14 @@ contract RaffleTest is Test{
 Raffle public raffle;
 HelperConfig public helperConfig;
 
+uint256 entranceFee;
+        uint256 interval;
+        address vrfCoordinator;
+        bytes32 gasLane;
+        uint256 subscriptionId;
+        uint32 callbackGasLimit;
+        address link;
+
 address public PLAYER = makeAddr("player");
 uint256 public constant STARTING_USER_BALANCE = 10 ether;
 
@@ -18,6 +26,22 @@ uint256 public constant STARTING_USER_BALANCE = 10 ether;
     function setUp() external{
         DeployRaffle deployRaffle = new DeployRaffle();
         (raffle, helperConfig) = deployRaffle.deployContract();
+        HelperConfig.NetworkConfig memory networkConfig = helperConfig.getConfig();
+        entranceFee = config.entranceFee;
+        interval = config.interval;
+        vrfCoordinator = config.vrfCoordinator;
+        gasLane = config.gasLane;
+        subscriptionId = config.subscriptionId;
+        callbackGasLimit = config.callbackGasLimit;
+        link = config.link;
+
+
     
     }
+
+
+function testRaffleInitializesInOpenState() public view{
+    assert(raffle,getRaffleState() == Raffle.RaffleState.OPEN);
+}
+
 }

@@ -72,8 +72,8 @@ function getConfig() public returns (NetworkConfig memory) {
 
     function getOrCreateAnvilConfig() public returns (NetworkConfig memory localNetworkConfig) {
         // Check to see if we set a config for this chain
-        if (localNetworkConfig.vrfCoordinator != address(0)) {
-            return localNetworkConfig;
+        if (networkConfig[LOCAL_CHAIN_ID].vrfCoordinator != address(0)) {
+            return networkConfig[LOCAL_CHAIN_ID];
         }
 
 
