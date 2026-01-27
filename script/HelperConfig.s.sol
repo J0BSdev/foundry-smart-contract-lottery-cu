@@ -4,6 +4,8 @@ pragma solidity ^0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+import {LinkToken} from "../test/mocks/LinkToken.sol";
+
 
 abstract contract CodeConstants{
 /*VRF Mock values */
@@ -80,6 +82,7 @@ function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
 vm.startBroadcast();
 VRFCoordinatorV2_5Mock vrfCoordinatorMock = 
     new VRFCoordinatorV2_5Mock(MOCK_BASE_FEE, MOCK_GAS_PRICE, MOCK_WEI_PER_UINT_LINK);  
+    LinkToken link = new LinkToken();
 vm.stopBroadcast();
 
 localNetworkConfig = NetworkConfig({
@@ -89,8 +92,9 @@ localNetworkConfig = NetworkConfig({
      //doesnt matter for mocks
     gasLane: 0x474eae0326401e7ec14af5ebd6d6fee8f89f9bed30ad9e36d9be6093d974f4a8,
     callbackGasLimit: 500000, //500000 gas
-    subscriptionId: 0,
-    link: 0x779877A7B0D9E8603169DdbD7836e478b4624789
+    subscriptionId: 102387371216783956617991553388252470847616001868515219858809289916476900162878,
+    link: address(link)
+
 }); 
 
 return localNetworkConfig;
