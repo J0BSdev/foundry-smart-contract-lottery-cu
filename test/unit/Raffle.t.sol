@@ -79,4 +79,20 @@ emit RaffleEntered(PLAYER);
 raffle.enterRaffle{value: entranceFee}();
 //assert
 }
+
+
+function testDontAllowPlayerToEnterWhileRaffleIsCalculating() public{
+    //Arrange
+    vm.prank(PLAYER);
+    raffle.enterRaffle{value: entranceFee}();
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
+    raffle.performUpkeep("");
+
+    //act/assert
+vm.expectRevert(Raffle.Raffle__RaffleNotOpen.selector);
+vm.prank(PLAYER);
+raffle.enterRaffle{value: entranceFee}();
 }
+}
+    
