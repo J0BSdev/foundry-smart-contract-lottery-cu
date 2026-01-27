@@ -30,16 +30,15 @@ function createSubscription(address vrfCoordinator) public returns (uint256,addr
     }
 
 }
-contract FundSubscription is Script {
+contract FundSubscription is Script, CodeConstants {
     uint256 public constant FUND_AMOUNT = 3 ether; // 3 LINK
 
     function fundSubscriptionUsingConfig() public {
         HelperConfig helperConfig = new HelperConfig();
-    address subscriptionId = helperConfig.getConfig().subscriptionId;
-     uint256 subId = helperConfig.getConfig().subscriptionId;
+    uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
      address vrfCoordinator = helperConfig.getConfig().vrfCoordinator; 
      address link = helperConfig.getConfig().link;
-     fundSubscription(vrfCoordinator,subId,link);
+     fundSubscription(vrfCoordinator,subscriptionId,link);
 }
 
 function fundSubscription(address vrfCoordinator,uint256 subscriptionId,address link) public{
@@ -48,20 +47,18 @@ function fundSubscription(address vrfCoordinator,uint256 subscriptionId,address 
     console.log("On chainId:", block.chainid);
 
 
-if (block.chainid == LOCAL_CHAIN_ID){
+if (block.chainid == SEPOLIA_CHAIN_ID){
     vm.startBroadcast();
     VRFCoordinatorV2_5Mock(vrfCoordinator).fundSubscription(subscriptionId,
     FUND_AMOUNT);
     vm.stopBroadcast();
-
-}else{
+} else if(block.chainid == LOCAL_CHAIN_ID){
     vm.startBroadcast();
-}LinkToken(link).transferAndCall(vrfCoordinator , FUND_AMOUNT, (abi.encode(subscriptionId)));
-vm.stopBroadcast();
+    LinkToken(link).transferAndCall(vrfCoordinator, FUND_AMOUNT, abi.encode(subscriptionId));
+    vm.stopBroadcast();
 }
-
-        function run() public{
-            fundSubscriptionUsingConfig();
+}
+function run() public{
+    fundSubscriptionUsingConfig();
 } 
-
 }
