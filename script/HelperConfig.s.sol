@@ -65,8 +65,7 @@ function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
             gasLane: 0x474eae0326401e7ec14af5ebd6d6fee8f89f9bed30ad9e36d9be6093d974f4a8,
             callbackGasLimit: 500000, //500000 gas
             subscriptionId: 0,
-
-            link: 0x79D3D58aCE80aF49453e7c32E1B2018AcaE13E3E
+            link:0x779877A7B0D9E8603169DdbD7836e478b4624789
         });
     }
 
@@ -91,7 +90,7 @@ localNetworkConfig = NetworkConfig({
     gasLane: 0x474eae0326401e7ec14af5ebd6d6fee8f89f9bed30ad9e36d9be6093d974f4a8,
     callbackGasLimit: 500000, //500000 gas
     subscriptionId: 0,
-    link: 0x79D3D58aCE80aF49453e7c32E1B2018AcaE13E3E
+    link: 0x779877A7B0D9E8603169DdbD7836e478b4624789
 }); 
 
 return localNetworkConfig;

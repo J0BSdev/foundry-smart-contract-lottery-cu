@@ -28,4 +28,18 @@ function createSubscription(address vrfCoordinator) public returns (uint256,addr
     function run() public{
         createSubscriptionUsingConfig();
     }
+
+
+
+    contract FundSubscription is Script {
+uint256 public constant FUND_AMOUNT = 3 ether;// 3 LINK
+function fundSubscriptionUsingConfig() public{
+
+    HelperConfig helperConfig = new HelperConfig();
+    address subscriptionId = helperConfig.getConfig().subscriptionId;
+     uint 256 address vrfCoordinator = helperConfig.getConfig().vrfCoordinator; 
+
+
+
+        function run() public{
 }

@@ -25,7 +25,6 @@ import {CreateSubscription} from "./Interactions.s.sol";
 
 
 
-
     //deploy raffle
     vm.startBroadcast();
     Raffle raffle = new Raffle(
