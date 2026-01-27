@@ -14,6 +14,9 @@ import {HelperConfig} from "./HelperConfig.s.sol";
     //sepolia -> get sepolia config
       HelperConfig.NetworkConfig memory networkConfig = helperConfig.getConfig();
 
+      if(networkConfig.subscriptionId == 0){
+        //create a subscription
+
     //deploy raffle
     vm.startBroadcast();
     Raffle raffle = new Raffle(
@@ -31,4 +34,5 @@ vm.stopBroadcast();
 return (raffle, helperConfig);
 
      }
+ }
  }
