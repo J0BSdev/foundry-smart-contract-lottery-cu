@@ -10,8 +10,8 @@ import {CreateSubscription} from "./Interactions.s.sol";
  contract DeployRaffle is Script {
     function run() public{}
 
-        function deployContract() public returns (Raffle,HelperConfig){
-      HelperConfig helperConfig = new HelperConfig();
+        function deployContract() public returns (Raffle raffle,HelperConfig helperConfig){
+      helperConfig = new HelperConfig();
     //local -> deploy mocks ,get local config
     //sepolia -> get sepolia config
       HelperConfig.NetworkConfig memory networkConfig = helperConfig.getConfig();
@@ -27,7 +27,7 @@ import {CreateSubscription} from "./Interactions.s.sol";
 
     //deploy raffle
     vm.startBroadcast();
-    Raffle raffle = new Raffle(
+    raffle = new Raffle(
         networkConfig.entranceFee,
         networkConfig.interval,
         networkConfig.vrfCoordinator,
