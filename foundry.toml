@@ -17,6 +17,8 @@ sepolia = {key = "${ETHERSCAN_API_KEY}"}
 
 [rpc_endpoints]
 sepolia = "${SEPOLIA_RPC_URL}"
-
+# Use: forge script ... --chain sepolia (reads URL from here)
+ [fuzz]
+ runs = 256 
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
