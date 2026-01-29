@@ -138,12 +138,23 @@ function testPerformUpkeepCanOnlyRunIfUpkeepIsTrue() public{
     raffle.enterRaffle{value: entranceFee}();
     vm.warp(block.timestamp + interval + 1);
     vm.roll(block.number + 1);
-    
+
     //act
     raffle.performUpkeep("");
     //assert
 }
 
+function testPerformUpkeepRevertsIfChecksUpeekpIsFalse() public{
+    //Arrange
+   uint256 currentBalance = 0;
+   uint256 numPlayer = 0;
+   Raffle.RaffleState rState = raffle.getRaffleState();
+   
+//acts/asserts
+vm.expectRevert(
+    abi.encodeWithSelector(Raffle.Raffle__UpkeepNotNeeded.selector,
+    currentBalance,numPlayer,rState));
+raffle.performUpkeep("");
 
-
+}
 }
