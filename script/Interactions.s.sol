@@ -5,6 +5,7 @@ import {Script,console} from "forge-std/Script.sol";
 import {HelperConfig,CodeConstants} from "./HelperConfig.s.sol";
 import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
 import {LinkToken} from "../test/mocks/LinkToken.sol";
+import {DevOpsTools} from "foundry-devops/DevOpsTools.sol";
 
 
 contract CreateSubscription is Script, CodeConstants {
@@ -60,5 +61,29 @@ if (block.chainid == SEPOLIA_CHAIN_ID){
 }
 function run() public{
     fundSubscriptionUsingConfig();
-} 
+}
+}
+
+contract AddConsumer is Script {
+    function addConsumerUsingConfig(address mostRecentlyDeployed) public {
+        HelperConfig helperConfig = new HelperConfig();
+        address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
+        uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
+        addConsumer(mostRecentlyDeployed, vrfCoordinator, subscriptionId);
+    }
+
+function addConsumer(address contractToAddtoVrf, address vrfCoordinator, uint256 subscriptionId) public {
+    console.log("Adding consumer contract:", contractToAddtoVrf);
+    console.log("Using vrfCoordinator at:", vrfCoordinator);
+    console.log("On chainId:", block.chainid);
+    vm.startBroadcast();
+    VRFCoordinatorV2_5Mock(vrfCoordinator).addConsumer(subscriptionId,contractToAddtoVrf);
+    vm.stopBroadcast();
+    console.log("Consumer contract added successfully");
+}
+
+    function run() external{
+address mostRecentlyDeployedContract = DevOpsTools.get_most_recent_deployment("Raffle", block.chainid);
+        addConsumerUsingConfig(mostRecentlyDeployedContract);
+    }
 }

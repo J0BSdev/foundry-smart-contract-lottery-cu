@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import {Script} from "forge-std/Script.sol";
 import {Raffle} from "../src/Raffle.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
-import {CreateSubscription} from "./Interactions.s.sol";
+import {CreateSubscription,FundSubscription,AddConsumer } from "./Interactions.s.sol";
 
 
  contract DeployRaffle is Script {
@@ -22,7 +22,9 @@ import {CreateSubscription} from "./Interactions.s.sol";
        (networkConfig.subscriptionId,networkConfig.vrfCoordinator) =
         createsubcription.createSubscriptionUsingConfig();
 
-
+        //fund it
+        FundSubscription fundSubscription = new FundSubscription();
+        fundSubscription.fundSubscriptionUsingConfig();
 
 
     //deploy raffle
@@ -39,6 +41,13 @@ import {CreateSubscription} from "./Interactions.s.sol";
 
 
 vm.stopBroadcast();
+
+AddConsumer addConsumer = new AddConsumer();
+//dont need to boradcast here because we are already in the broadcast block
+addConsumer.addConsumer(address(raffle),networkConfig.vrfCoordinator,networkConfig.subscriptionId);
+
+
+
 return (raffle, helperConfig);
 
      }
