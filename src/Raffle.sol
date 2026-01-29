@@ -64,6 +64,7 @@ contract Raffle is VRFConsumerBaseV2Plus{
     //Events
     event RaffleEntered(address indexed player);
 event WinnerPicked(address indexed winner);
+event RequestedRaffleWinner(uint256 indexed requestId);
 
     constructor(
     uint256 entranceFee,
@@ -143,11 +144,11 @@ VRFV2PlusClient.RandomWordsRequest memory request = VRFV2PlusClient.RandomWordsR
     VRFV2PlusClient.ExtraArgsV1({nativePayment: false}))
 });
 
-  s_vrfCoordinator.requestRandomWords(request);
+uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
+emit RequestedRaffleWinner(requestId);
 
 
-}  
-   //CEI: Checks, Effects, Interactions     
+}
   function fulfillRandomWords(uint256 /* requestId */, uint256[] calldata randomWords) internal override{
     //checks
     //conditionals
