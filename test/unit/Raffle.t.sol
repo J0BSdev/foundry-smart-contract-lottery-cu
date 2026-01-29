@@ -127,4 +127,23 @@ assert(!upkeepNeeded);
 
 
 }
+//Challenge
+       //testCheckUpKeepReturnsFalseIfEnoughTimeHasPassed
+       //testCheckUpKeepReturnsTrueWhenParametersAreGood
+
+
+function testPerformUpkeepCanOnlyRunIfUpkeepIsTrue() public{
+    //Arrange
+    vm.prank(PLAYER);
+    raffle.enterRaffle{value: entranceFee}();
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
+    
+    //act
+    raffle.performUpkeep("");
+    //assert
+}
+
+
+
 }

@@ -86,4 +86,12 @@ function addConsumer(address contractToAddtoVrf, address vrfCoordinator, uint256
 address mostRecentlyDeployedContract = DevOpsTools.get_most_recent_deployment("Raffle", block.chainid);
         addConsumerUsingConfig(mostRecentlyDeployedContract);
     }
+
+       //Challenge
+       //testCheckUpKeepReturnsFalseIfEnoughTimeHasPassed
+       //testCheckUpKeepReturnsTrueWhenParametersAreGood
+
+
+       
+
 }
