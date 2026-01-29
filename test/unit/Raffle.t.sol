@@ -94,5 +94,37 @@ vm.expectRevert(Raffle.Raffle__RaffleNotOpen.selector);
 vm.prank(PLAYER);
 raffle.enterRaffle{value: entranceFee}();
 }
+
+
+
+function testCheckUpkeepReturnsFalseIfItHasNoBalance() public{
+//Arrange
+vm.warp(block.timestamp + interval + 1);
+vm.roll(block.number + 1);
+
+
+//act
+(bool upkeepNeeded, ) = raffle.checkUpkeep("");
+
+//assert
+assert(!upkeepNeeded);
+
+
 }
-    
+function testCheckUpkeepReturnsFalseIfRaffleIsNotOpen() public{
+
+//Arrange
+vm.warp(block.timestamp + interval + 1);
+vm.roll(block.number + 1);
+raffle.performUpkeep("");
+raffle.enterRaffle{value: entranceFee}();
+
+//act
+(bool upkeepNeeded, ) = raffle.checkUpkeep("");
+//assert
+assert(!upkeepNeeded);
+
+
+
+}
+}
