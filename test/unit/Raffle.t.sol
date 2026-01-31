@@ -7,8 +7,9 @@ import {Raffle} from "../../src/Raffle.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {Vm} from "forge-std/Vm.sol";
 import {VRFCoordinatorV2_5Mock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+import {CodeConstants} from "../../script/HelperConfig.s.sol";
 
-contract RaffleTest is Test{
+contract RaffleTest is CodeConstants, Test{
 Raffle public raffle;
 HelperConfig public helperConfig;
 
@@ -191,6 +192,17 @@ Raffle.RaffleState raffleState =raffle.getRaffleState();
 assert(uint256(requestId) > 0);
 assert(uint256(raffleState) == 1);
 }
+
+
+modifier skipFork(){
+    if(block.chainid == LOCAL_CHAIN_ID){
+        return;
+    }
+    _;
+}
+
+
+
 
 
 
