@@ -48,9 +48,9 @@ contract RaffleTest is Test, CodeConstants {
         vrfCoordinatorV2_5 = config.vrfCoordinatorV2_5;
         link = LinkToken(config.link);
 
-        vm.startPrank(msg.sender);
+        vm.startPrank(config.account);
         if (block.chainid == LOCAL_CHAIN_ID) {
-            link.mint(msg.sender, LINK_BALANCE);
+            link.mint(config.account, LINK_BALANCE);
             VRFCoordinatorV2_5Mock(vrfCoordinatorV2_5).fundSubscription(subscriptionId, LINK_BALANCE);
         }
         link.approve(vrfCoordinatorV2_5, LINK_BALANCE);
