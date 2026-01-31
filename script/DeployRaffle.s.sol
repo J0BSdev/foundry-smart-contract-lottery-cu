@@ -1,55 +1,43 @@
-//SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
 
 import {Script} from "forge-std/Script.sol";
-import {Raffle} from "../src/Raffle.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
-import {CreateSubscription,FundSubscription,AddConsumer } from "./Interactions.s.sol";
+import {Raffle} from "../src/Raffle.sol";
+import {AddConsumer, CreateSubscription, FundSubscription} from "./Interactions.s.sol";
 
+contract DeployRaffle is Script {
+    function run() external returns (Raffle, HelperConfig) {
+        HelperConfig helperConfig = new HelperConfig(); // This comes with our mocks!
+        AddConsumer addConsumer = new AddConsumer();
+        HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
 
- contract DeployRaffle is Script {
-    function run() public{}
+        if (config.subscriptionId == 0) {
+            CreateSubscription createSubscription = new CreateSubscription();
+            (config.subscriptionId, config.vrfCoordinatorV2_5) =
+                createSubscription.createSubscription(config.vrfCoordinatorV2_5, config.account);
 
-        function deployContract() public returns (Raffle raffle,HelperConfig helperConfig){
-      helperConfig = new HelperConfig();
-    //local -> deploy mocks ,get local config
-    //sepolia -> get sepolia config
-      HelperConfig.NetworkConfig memory networkConfig = helperConfig.getConfig();
+            FundSubscription fundSubscription = new FundSubscription();
+            fundSubscription.fundSubscription(
+                config.vrfCoordinatorV2_5, config.subscriptionId, config.link, config.account
+            );
 
-      if(networkConfig.subscriptionId == 0){
-        //create a subscription
-        CreateSubscription createsubcription = new CreateSubscription();
-       (networkConfig.subscriptionId,networkConfig.vrfCoordinator) =
-        createsubcription.createSubscription(networkConfig.vrfCoordinator,networkConfig.account);
+            helperConfig.setConfig(block.chainid, config);
+        }
 
-        //fund it
-        FundSubscription fundSubscription = new FundSubscription();
-        fundSubscription.fundSubscription(networkConfig.vrfCoordinator,networkConfig.subscriptionId,networkConfig.link,networkConfig.account);
+        vm.startBroadcast(config.account);
+        Raffle raffle = new Raffle(
+            config.subscriptionId,
+            config.gasLane,
+            config.automationUpdateInterval,
+            config.raffleEntranceFee,
+            config.callbackGasLimit,
+            config.vrfCoordinatorV2_5
+        );
+        vm.stopBroadcast();
 
-
-    //deploy raffle
-    vm.startBroadcast(networkConfig.account);
-    raffle = new Raffle(
-        networkConfig.entranceFee,
-        networkConfig.interval,
-        networkConfig.vrfCoordinator,
-        networkConfig.gasLane,
-        networkConfig.subscriptionId,
-        networkConfig.callbackGasLimit
-    );
-
-
-
-vm.stopBroadcast();
-
-AddConsumer addConsumer = new AddConsumer();
-//dont need to boradcast here because we are already in the broadcast block
-addConsumer.addConsumer(address(raffle),networkConfig.vrfCoordinator,networkConfig.subscriptionId,networkConfig.account);
-
-
-
-return (raffle, helperConfig);
-
-     }
- }
- }
+        // We already have a broadcast in here
+        addConsumer.addConsumer(address(raffle), config.vrfCoordinatorV2_5, config.subscriptionId, config.account);
+        return (raffle, helperConfig);
+    }
+}

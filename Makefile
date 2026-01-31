@@ -39,16 +39,20 @@ ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
 	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 endif
 
-deploy:
-	@forge script script/DeployRaffle.s.sol:DeployRaffle $(NETWORK_ARGS)
+deploy-sepolia:
+	@forge script script/DeployRaffle.s.sol:DeployRaffle --rpc-url $(SEPOLIA_RPC_URL)
+		--private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 
 createSubscription:
-	@forge script script/Interactions.s.sol:CreateSubscription $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:CreateSubscription --rpc-url $(SEPOLIA_RPC_URL)
+		--private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 
 addConsumer:
-	@forge script script/Interactions.s.sol:AddConsumer $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:AddConsumer --rpc-url $(SEPOLIA_RPC_URL)
+		--private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 
 fundSubscription:
-	@forge script script/Interactions.s.sol:FundSubscription $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:FundSubscription --rpc-url $(SEPOLIA_RPC_URL)
+		--private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 
 
