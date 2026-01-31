@@ -20,15 +20,15 @@ import {CreateSubscription,FundSubscription,AddConsumer } from "./Interactions.s
         //create a subscription
         CreateSubscription createsubcription = new CreateSubscription();
        (networkConfig.subscriptionId,networkConfig.vrfCoordinator) =
-        createsubcription.createSubscriptionUsingConfig();
+        createsubcription.createSubscription(networkConfig.vrfCoordinator,networkConfig.account);
 
         //fund it
         FundSubscription fundSubscription = new FundSubscription();
-        fundSubscription.fundSubscriptionUsingConfig();
+        fundSubscription.fundSubscription(networkConfig.vrfCoordinator,networkConfig.subscriptionId,networkConfig.link,networkConfig.account);
 
 
     //deploy raffle
-    vm.startBroadcast();
+    vm.startBroadcast(networkConfig.account);
     raffle = new Raffle(
         networkConfig.entranceFee,
         networkConfig.interval,
@@ -44,7 +44,7 @@ vm.stopBroadcast();
 
 AddConsumer addConsumer = new AddConsumer();
 //dont need to boradcast here because we are already in the broadcast block
-addConsumer.addConsumer(address(raffle),networkConfig.vrfCoordinator,networkConfig.subscriptionId);
+addConsumer.addConsumer(address(raffle),networkConfig.vrfCoordinator,networkConfig.subscriptionId,networkConfig.account);
 
 
 
